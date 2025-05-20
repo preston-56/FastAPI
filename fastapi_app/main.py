@@ -4,32 +4,38 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.security import OAuth2PasswordBearer
 import uvicorn
 from dotenv import load_dotenv
-from database import Base, engine
 
+# Load environment variables
 load_dotenv()
 
+# Database imports
+from database import Base, engine
+
+# Import models to ensure they're registered with SQLAlchemy
 import models
 
-# Routers for respective application modules
+# Import router modules
 from items.routes import item_router
 from orders.routes import order_router
 from users.routes import user_router
 
-app = FastAPI()
+# Initialize FastAPI app
+app = FastAPI(
+    title="Store API",
+    version="1.0.0",
+    description="API documentation for Store API"
+)
 
 # Create database tables on startup
 Base.metadata.create_all(bind=engine)
 
-# Route enpoint
+# Root endpoint
 @app.get("/")
 async def root():
-    return{"message: Welcome to FastAPI Store"}
+    return {"message": "Welcome to FastAPI Store"}
 
-# Setup a master API router with a versioned prefix
+# Setup versioned API router and include module routers
 api_router = APIRouter(prefix="/v1")
-"""
-Include all module routers
-"""
 api_router.include_router(item_router)
 api_router.include_router(order_router)
 api_router.include_router(user_router)
@@ -40,18 +46,19 @@ app.include_router(api_router)
 # Setup OAuth2 scheme for Swagger UI login flow
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v1/auth/login")
 
-""""
- Custom OpenAPI schema to support OAuth2 password flow in Swagger
-"""
+# Custom OpenAPI schema with security configuration
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
+
     openapi_schema = get_openapi(
-        title="Store API ",
-        version="1.0.0",
-        description="API documentation for Store API",
+        title=app.title,
+        version=app.version,
+        description=app.description,
         routes=app.routes,
     )
+
+    # Add security scheme
     openapi_schema["components"]["securitySchemes"] = {
         "BearerAuth": {
             "type": "http",
@@ -59,7 +66,8 @@ def custom_openapi():
             "bearerFormat": "JWT",
         }
     }
-     # add global security requirement
+
+    # Apply global security requirement
     openapi_schema["security"] = [{"BearerAuth": []}]
 
     app.openapi_schema = openapi_schema
@@ -67,7 +75,7 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-# Run the FastAPI app using Uvicorn when the script is executed directly
+# Run the app using Uvicorn when executed directly
 if __name__ == "__main__":
     port = os.environ.get("PORT")
     if not port:
