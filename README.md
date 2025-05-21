@@ -1,4 +1,4 @@
-# Deploy Your First FastAPI + PostgreSQL App on Render
+## Deploy Your First FastAPI + PostgreSQL App on Render
 
 <p align="center">
   <a href="https://www.freecodecamp.org/news/your-article-slug">
