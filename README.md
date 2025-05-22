@@ -1,7 +1,7 @@
 <h3 align="center">Deploy Your First FastAPI + PostgreSQL App on Render</h3>
 
 <p align="center">
-  <a href="https://www.freecodecamp.org/news/your-article-slug">
+  <a href="https://www.freecodecamp.org/news/deploy-fastapi-postgresql-app-on-render/">
     <img src="https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg" width="200" alt="FreeCodeCamp logo">
   </a>
 </p>
@@ -24,5 +24,5 @@
 
 ## Article
 
-Click the logo above or read the full post here: [Deploy FastAPI + PostgreSQL on Render](https://www.freecodecamp.org/news/your-article-slug)
+Click the logo above or read the full post here: [Deploy FastAPI + PostgreSQL on Render](https://www.freecodecamp.org/news/deploy-fastapi-postgresql-app-on-render/)
 
